@@ -305,11 +305,11 @@ class EntryElement(XmlElement):
         result.write("\n")
 
         result.write("\t> Sense(s):\n")
-        for sense in self.sense:
+        for i, sense in enumerate(self.sense):
+            result.write(f"\t--- {i+1} ---\n")
             sense.as_text(
-                sub_elements=SenseElement.SUB_ELEMENTS, buffer=result, indent_level=1
+                sub_elements=SenseElement.SUB_ELEMENTS, buffer=result, indent_level=2
             )
-            result.write("\n")
         return result.getvalue()
 
     def __repr__(self):
