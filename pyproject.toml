@@ -1,14 +1,17 @@
 [tool.poetry]
-name = "jfc-data"
+name = "jmdict-wrapper"
 version = "0.1.0"
-description = ""
+description = "Python wrapper for JMDict-XML file."
 authors = ["fariz.tumbuan <fariz.tumbuan@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
+BeautifulSoup4 = "^4.9.3"
+lxml = "^4.6.1"
 
 [tool.poetry.dev-dependencies]
+black = {version = "^20.8b1", allow-prereleases = true}
 
 [build-system]
 requires = ["poetry>=0.12"]
