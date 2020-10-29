@@ -146,9 +146,9 @@ class LanguageSourceElement(XmlElement):
 
     def __init__(self, item: Tag = None):
         self.attrs: Dict = {
-            "lang": None,
-            "type": None,
-            "wasei": None,
+            "xml:lang": None,
+            "ls_type": None,
+            "ls_wasei": None,
         }
         if item:
             self.update(item)
@@ -167,9 +167,9 @@ class GlossaryElement(XmlElement):
     def __init__(self, item: Tag = None):
         self.value = None
         self.attrs: Dict = {
-            "lang": None,
-            "type": None,
-            "gender": None,
+            "xml:lang": None,
+            "g_type": None,
+            "g_gend": None,
         }
         if item:
             self.update(item)
