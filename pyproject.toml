@@ -6,7 +6,7 @@ authors = ["fariz.tumbuan <fariz.tumbuan@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.6"
 BeautifulSoup4 = "^4.9.3"
 lxml = "^4.6.1"
 

@@ -10,6 +10,9 @@ black==20.8b1 \
 click==7.1.2 \
     --hash=sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc \
     --hash=sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a
+dataclasses==0.6; python_version < "3.7" \
+    --hash=sha256:454a69d788c7fda44efd71e259be79577822f5e3f53f029a22d08004e951dc9f \
+    --hash=sha256:6988bd2b895eef432d562370bb707d540f32f7360ab13da45340101bc2307d84
 lxml==4.6.1 \
     --hash=sha256:4b7572145054330c8e324a72d808c8c8fbe12be33368db28c39a255ad5f7fb51 \
     --hash=sha256:302160eb6e9764168e01d8c9ec6becddeb87776e81d3fcb0d97954dd51d48e0a \
