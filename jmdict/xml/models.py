@@ -54,7 +54,7 @@ class MatchValueMixin(object):
     def match_value(self, value: str, exact: bool = True, case_sensitive: bool = True):
         temp_val = self.value
         if not case_sensitive:
-            exact = exact.lower()
+            value = value.lower()
             temp_val = temp_val.lower()
         if exact:
             return value == temp_val
@@ -124,7 +124,7 @@ class KanjiElement(MatchValueMixin, XmlElement):
         return f"<{cls_name} Value: {self.value}>"
 
 
-class ReadingElement(XMatchValueMixin, mlElement):
+class ReadingElement(MatchValueMixin, XmlElement):
     tag: str = "r_ele"
 
     def __init__(self, item: Tag = None):
@@ -345,7 +345,7 @@ class EntryElement(XmlElement):
         """
         Match against glossary fields.
         """
-        for kanji in self.self.kanji:
+        for kanji in self.kanji:
             if kanji.match_value(value, *args, **kwargs):
                 return True
         return False
@@ -354,7 +354,7 @@ class EntryElement(XmlElement):
         """
         Match against glossary fields.
         """
-        for reading in self.self.reading:
+        for reading in self.reading:
             if reading.match_value(value, *args, **kwargs):
                 return True
         return False
@@ -363,7 +363,7 @@ class EntryElement(XmlElement):
         """
         Match against glossary fields.
         """
-        for sense in self.self.sense:
+        for sense in self.sense:
             if sense.match_glossary(value, *args, **kwargs):
                 return True
         return False
