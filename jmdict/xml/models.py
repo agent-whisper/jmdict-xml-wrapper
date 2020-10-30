@@ -427,6 +427,9 @@ class JMDict(object):
     def __init__(self, entries: List[EntryElement] = []):
         self.entries: List[EntryElement] = entries
 
+    def __getitem__(self, item):
+        return self.entries[item]
+
     def as_text(self, start: int = None, end: int = None, buffer: io.StringIO = None):
         """
         Display entries contained in this instance as a formatted string.
