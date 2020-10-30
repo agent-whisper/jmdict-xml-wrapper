@@ -452,6 +452,31 @@ class JMDict(object):
     def count(self):
         return len(self.entries)
 
+    def filter(
+        self,
+        sequence: int = None,
+        kanji: str = None,
+        reading: str = None,
+        glossary: str = None,
+        limit: int = None,
+    ):
+        """
+        Filter entries contained in this instance and return them as a new
+        JMDict instance.
+        """
+        if not (kanji or reading or glossary):
+            return ValueError("Query input required.")
+        results = []
+        i = 0
+        if limit is None or limit < 0:
+            limit = len(self.entries)
+        while i < len(self.entries) and len(results) <= limit:
+            entry = self.entries[i]
+            if entry.match(kanji=kanji, reading=reading, glossary=glossary):
+                results.append(entry)
+            i += 1
+        return JMDict(results)
+
     def __repr__(self):
         cls_name = type(self).__name__
         return f"<{cls_name} Entries: {len(self.entries)}>"
