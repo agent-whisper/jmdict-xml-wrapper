@@ -84,7 +84,7 @@ class XmlElement(ABC):
         """
         raise NotImplementedError
 
-    def display_values(self, *args, **kwargs):
+    def print_out(self, *args, **kwargs):
         """
         Print as_text() output on the terminal.
         """
@@ -446,7 +446,7 @@ class JMDict(object):
             buffer.write(entry.as_text())
         return buffer.getvalue()
 
-    def display_entries(self, *args, **kwargs):
+    def print_out(self, *args, **kwargs):
         print(self.as_text(*args, **kwargs))
 
     def count(self):
