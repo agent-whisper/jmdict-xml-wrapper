@@ -368,6 +368,25 @@ class EntryElement(XmlElement):
                 return True
         return False
 
+    def match(
+        self,
+        kanji: str = None,
+        reading: str = None,
+        glossary: str = None,
+    ):
+        if not (kanji or reading or glossary):
+            return ValueError("Query input required.")
+        if kanji:
+            if self.match_kanji(kanji, exact=False, case_sensitive=False):
+                return True
+        if reading:
+            if self.match_reading(reading, exact=False, case_sensitive=False):
+                return True
+        if glossary:
+            if self.match_glossary(glossary, exact=False, case_sensitive=False):
+                return True
+        return False
+
     def __repr__(self):
         cls_name = type(self).__name__
         return f"<{cls_name} Sequence: {self.sequence}, Kanji: {len(self.kanji)}, Reading: {len(self.reading)}, Sense: {len(self.sense)}>"
