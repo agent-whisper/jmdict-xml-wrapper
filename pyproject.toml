@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "jmdict-wrapper"
+name = "jmdict-xml-wrapper"
 version = "0.1.0"
 description = "Python wrapper for JMDict-XML file."
 authors = ["fariz.tumbuan <fariz.tumbuan@gmail.com>"]

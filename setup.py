@@ -13,7 +13,7 @@ readme = ''
 
 setup(
     long_description=readme,
-    name='jmdict-wrapper',
+    name='jmdict-xml-wrapper',
     version='0.1.0',
     description='Python wrapper for JMDict-XML file.',
     python_requires='==3.*,>=3.6.0',
