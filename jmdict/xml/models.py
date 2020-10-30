@@ -64,9 +64,10 @@ class MatchValueMixin(object):
 
 class XmlElement(ABC):
     """
-    Abstract class for JMDict xml elements.
+    Abstract class for JMDict xml elements (tested with Rev 1.0.9).
     """
 
+    version: str = "1.0.9"
     tag: str = None
 
     @abstractmethod
@@ -374,10 +375,9 @@ class EntryElement(XmlElement):
 
 class JMDict(XmlElement):
     """
-    The main JMDict-xml wrapper (compatible with Rev 1.0.9).
+    The main JMDict-xml wrapper/container.
     """
 
-    comp_version: str = "1.0.9"
     tag: str = "jmdict"
 
     def __init__(self, xml_dir: str):
