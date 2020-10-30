@@ -392,27 +392,39 @@ class EntryElement(XmlElement):
         return f"<{cls_name} Sequence: {self.sequence}, Kanji: {len(self.kanji)}, Reading: {len(self.reading)}, Sense: {len(self.sense)}>"
 
 
-class JMDict(XmlElement):
+class JMDict(object):
     """
-    The main JMDict-xml wrapper/container.
+    JMDict-entries container. This class is analogous to Django's Queryset.
     """
 
     tag: str = "jmdict"
 
-    def __init__(self, xml_dir: str):
-        self.entries: List[EntryElement] = []
+    @classmethod
+    def _read_xml_soup(cls, item: BeautifulSoup):
+        if item is None:
+            raise ValueError("Received None value as input.")
+        entries = []
+        for entry in item.find_all(EntryElement.tag):
+            entries.append(EntryElement(entry))
+        return entries
+
+    @classmethod
+    def from_xml(cls, xml_dir: str):
+        """
+        Create a JMDict instance by reading a JMDict-XML. This will load all
+        entries inside the file.
+        """
         with open(xml_dir, "r") as xml:
             content = BeautifulSoup(xml, "lxml")
-            self.update(content.jmdict)
+            entries = cls._read_xml_soup(content.jmdict)
+            return cls(entries)
 
-    @XmlElementDecorators.verify_tag
-    def update(self, item: BeautifulSoup):
-        for entry in item.find_all(EntryElement.tag):
-            self.entries.append(EntryElement(entry))
+    def __init__(self, entries: List[EntryElement] = []):
+        self.entries: List[EntryElement] = entries
 
     def as_text(self, start: int = None, end: int = None, buffer: io.StringIO = None):
         """
-        end is exclusive
+        Display entries contained in this instance as a formatted string.
         """
         if (start is not None and start >= len(self.entries)) or (
             end is not None and end > len(self.entries)
@@ -433,6 +445,12 @@ class JMDict(XmlElement):
         for entry in entries:
             buffer.write(entry.as_text())
         return buffer.getvalue()
+
+    def display_entries(self, *args, **kwargs):
+        print(self.as_text(*args, **kwargs))
+
+    def count(self):
+        return len(self.entries)
 
     def __repr__(self):
         cls_name = type(self).__name__
