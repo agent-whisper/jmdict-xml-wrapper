@@ -145,6 +145,7 @@ class LanguageSourceElement(XmlElement):
     tag: str = "lsource"
 
     def __init__(self, item: Tag = None):
+        self.value = None
         self.attrs: Dict = {
             "xml:lang": None,
             "ls_type": None,
@@ -158,6 +159,7 @@ class LanguageSourceElement(XmlElement):
 
     @XmlElementDecorators.verify_tag
     def update(self, item: Tag):
+        self.value = item.text
         self.attrs.update(item.attrs)
 
 
@@ -239,7 +241,7 @@ class SenseElement(XmlElement):
         for dialect in item.find_all("dial"):
             self.dialect.append(dialect.text)
         for lsource in item.find_all(LanguageSourceElement.tag):
-            self.language_src = LanguageSourceElement(lsource)
+            self.language_src.append(LanguageSourceElement(lsource))
         for glossary in item.find_all(GlossaryElement.tag):
             self.glossary.append(GlossaryElement(glossary))
 
