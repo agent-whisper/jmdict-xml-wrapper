@@ -45,6 +45,23 @@ class XmlElementDecorators(object):
         return wrapper
 
 
+class MatchValueMixin(object):
+    """
+    Mixin for checking if the queried value matches the object. Assumes the
+    applied object has `value` attribute.
+    """
+
+    def match_value(self, value: str, exact: bool = True, case_sensitive: bool = True):
+        temp_val = self.value
+        if not case_sensitive:
+            exact = exact.lower()
+            temp_val = temp_val.lower()
+        if exact:
+            return value == temp_val
+        else:
+            return value in temp_val
+
+
 class XmlElement(ABC):
     """
     Abstract class for JMDict xml elements.
@@ -77,7 +94,7 @@ class XmlElement(ABC):
         return f"<{cls_name}>"
 
 
-class KanjiElement(XmlElement):
+class KanjiElement(MatchValueMixin, XmlElement):
     tag: str = "k_ele"
 
     def __init__(self, item: Tag = None):
@@ -106,7 +123,7 @@ class KanjiElement(XmlElement):
         return f"<{cls_name} Value: {self.value}>"
 
 
-class ReadingElement(XmlElement):
+class ReadingElement(XMatchValueMixin, mlElement):
     tag: str = "r_ele"
 
     def __init__(self, item: Tag = None):
@@ -141,7 +158,7 @@ class ReadingElement(XmlElement):
         return f"<{cls_name} Value: {self.value}>"
 
 
-class LanguageSourceElement(XmlElement):
+class LanguageSourceElement(MatchValueMixin, XmlElement):
     tag: str = "lsource"
 
     def __init__(self, item: Tag = None):
@@ -163,7 +180,7 @@ class LanguageSourceElement(XmlElement):
         self.attrs.update(item.attrs)
 
 
-class GlossaryElement(XmlElement):
+class GlossaryElement(MatchValueMixin, XmlElement):
     tag: str = "gloss"
 
     def __init__(self, item: Tag = None):
@@ -266,6 +283,15 @@ class SenseElement(XmlElement):
                         buffer.write(f"{indentation(indent_level+1)}- {val}\n")
         return buffer.getvalue()
 
+    def match_glossary(self, value, *args, **kwargs):
+        """
+        Match against glossary fields.
+        """
+        for glos in self.glossary:
+            if glos.match_value(value, *args, **kwargs):
+                return True
+        return False
+
     def __repr__(self):
         cls_name = type(self).__name__
         return f"<{cls_name} Glossary: {len(self.glossary)}>"
@@ -313,6 +339,33 @@ class EntryElement(XmlElement):
                 sub_elements=SenseElement.SUB_ELEMENTS, buffer=result, indent_level=2
             )
         return result.getvalue()
+
+    def match_kanji(self, value, *args, **kwargs):
+        """
+        Match against glossary fields.
+        """
+        for kanji in self.self.kanji:
+            if kanji.match_value(value, *args, **kwargs):
+                return True
+        return False
+
+    def match_reading(self, value, *args, **kwargs):
+        """
+        Match against glossary fields.
+        """
+        for reading in self.self.reading:
+            if reading.match_value(value, *args, **kwargs):
+                return True
+        return False
+
+    def match_glossary(self, value, *args, **kwargs):
+        """
+        Match against glossary fields.
+        """
+        for sense in self.self.sense:
+            if sense.match_glossary(value, *args, **kwargs):
+                return True
+        return False
 
     def __repr__(self):
         cls_name = type(self).__name__
