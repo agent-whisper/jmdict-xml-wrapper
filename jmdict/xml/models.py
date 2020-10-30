@@ -409,6 +409,11 @@ class JMDict(object):
         return entries
 
     @classmethod
+    def from_soup(cls, soup: BeautifulSoup):
+        entries = cls._read_xml_soup(soup)
+        return cls(entries)
+
+    @classmethod
     def from_xml(cls, xml_dir: str):
         """
         Create a JMDict instance by reading a JMDict-XML. This will load all
